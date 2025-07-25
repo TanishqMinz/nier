@@ -90,7 +90,7 @@ export default function SilentHillPage() {
               <p>In my restless dreams, I see that town</p>
               <p>I remembered you having this song once on somewhere?</p>
               <br />
-              <p>Sorry if I made your eyes hurt lol I couldn't think of a good overlay design that would work on this</p>
+              <p>Sorry if this made your eyes hurt lol I couldn't think of a good overlay design that would work on this</p>
             </h1>
           </header>
         </div>

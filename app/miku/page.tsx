@@ -90,7 +90,7 @@ export default function MikuPage() {
           <main>
             <div className="content">
               <p>
-                Well you know Miku is another one of your obsessions so you get the point lol   
+                Well you know Miku is another one of your obsessions so you get the point
               </p>
 
               <div className="pinterest-grid">
