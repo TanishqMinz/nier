@@ -70,7 +70,7 @@ export default function SilentHillPage() {
         <iframe
           width="100%"
           height="100%"
-          src="https://www.youtube.com/embed/3nnJ014Kln4?si=ji4WXlyPi-HHH4V8&autoplay=1&mute=0&loop=1&controls=1&showinfo=0&rel=0"
+          src="https://www.youtube.com/embed/3nnJ014Kln4?si=ji4WXlyPi-HHH4V8&mute=0&loop=1&controls=1&showinfo=0&rel=0"
           title="Silent Hill Atmospheric Video"
           className="video-iframe"
           allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
