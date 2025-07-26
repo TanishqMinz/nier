@@ -1,10 +1,13 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import "../theme.css"
 
 export default function MikuPage() {
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null)
+  const [lightboxTitle, setLightboxTitle] = useState<string>("")
+
   useEffect(() => {
     // Set Miku theme colors
     document.documentElement.style.setProperty("--bg-color", "#86cecb")
@@ -29,13 +32,70 @@ export default function MikuPage() {
   }, [])
 
   const imageCards = [
-    { id: 1, height: 250, title: "cool figure", src: "/ac529ef9822aa5e15d1779f9c65a82f1.jpg", description: "A digital artwork of Miku." },
-    { id: 2, height: 180, title: "Fortnite battle pass", src: "/hatsune-miku-joins-fortnite.jpg", description: "Miku in neon lights." },
-    { id: 3, height: 320, title: "Cute", src: "/hd-adorable-hatsune-miku-art-anuzjvsnrxg422dt.jpg", description: "Miku performing on stage." },
+    {
+      id: 1,
+      height: 250,
+      title: "cool figure",
+      src: "/ac529ef9822aa5e15d1779f9c65a82f1.jpg",
+      description: "A digital artwork of Miku.",
+    },
+    {
+      id: 2,
+      height: 180,
+      title: "Fortnite battle pass",
+      src: "/hatsune-miku-joins-fortnite.jpg",
+      description: "Miku in neon lights.",
+    },
+    {
+      id: 3,
+      height: 320,
+      title: "Cute",
+      src: "/hd-adorable-hatsune-miku-art-anuzjvsnrxg422dt.jpg",
+      description: "Miku performing on stage.",
+    },
     { id: 4, height: 200, title: "Pokemon?", src: "/volttackle.jpg", description: "Character design sheet." },
-    { id: 5, height: 280, title: "Basic but pretty much the original", src: "/R.40c3a4ed01204bd8094e6cb21a0813ac", description: "Scene from a music video." },
-    { id: 6, height: 160, title: "Anime", src: "/R.e6bcd61f341e52b7fae1d73587880372", description: "Fan art illustration." },
+    {
+      id: 5,
+      height: 280,
+      title: "Basic but pretty much the original",
+      src: "/R.40c3a4ed01204bd8094e6cb21a0813ac",
+      description: "Scene from a music video.",
+    },
+    {
+      id: 6,
+      height: 160,
+      title: "Anime",
+      src: "/R.e6bcd61f341e52b7fae1d73587880372",
+      description: "Fan art illustration.",
+    },
   ]
+
+  const openLightbox = (src: string, title: string) => {
+    setLightboxImage(src)
+    setLightboxTitle(title)
+  }
+
+  const closeLightbox = () => {
+    setLightboxImage(null)
+    setLightboxTitle("")
+  }
+
+  const downloadImage = async (src: string, title: string) => {
+    try {
+      const response = await fetch(src)
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement("a")
+      link.href = url
+      link.download = `${title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.jpg`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error("Download failed:", error)
+    }
+  }
 
   return (
     <>
@@ -74,10 +134,28 @@ export default function MikuPage() {
         </nav>
       </div>
 
-      <div className="page-content">
-                  <div className="pattern">
-            <div className="pattern-inner"></div>
+      {/* Lightbox Modal */}
+      {lightboxImage && (
+        <div className="lightbox-overlay" onClick={closeLightbox}>
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <button className="lightbox-close" onClick={closeLightbox}>
+              ×
+            </button>
+            <img src={lightboxImage || "/placeholder.svg"} alt={lightboxTitle} className="lightbox-image" />
+            <div className="lightbox-controls">
+              <h3>{lightboxTitle}</h3>
+              <button className="download-btn" onClick={() => downloadImage(lightboxImage, lightboxTitle)}>
+                Download
+              </button>
+            </div>
           </div>
+        </div>
+      )}
+
+      <div className="page-content">
+        <div className="pattern">
+          <div className="pattern-inner"></div>
+        </div>
         <div className="container">
           <header>
             <h1>
@@ -85,23 +163,30 @@ export default function MikuPage() {
             </h1>
           </header>
 
-
-
           <main>
             <div className="content">
-              <p>
-                Well you know Miku is another one of your obsessions so you get the point
-              </p>
+              <p>Well you know Miku is another one of your obsessions so you get the point</p>
 
               <div className="pinterest-grid">
                 {imageCards.map((card) => (
                   <div key={card.id} className="pinterest-card">
                     <div className="card-image">
                       <img
-                        src={card.src}
+                        src={card.src || "/placeholder.svg"}
+                        alt={card.title}
+                        onClick={() => openLightbox(card.src, card.title)}
+                        style={{ cursor: "pointer" }}
                       />
                       <div className="card-overlay">
                         <h3>{card.title}</h3>
+                        <div className="card-actions">
+                          <button className="card-btn view-btn" onClick={() => openLightbox(card.src, card.title)}>
+                            View
+                          </button>
+                          <button className="card-btn download-btn" onClick={() => downloadImage(card.src, card.title)}>
+                            Download
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

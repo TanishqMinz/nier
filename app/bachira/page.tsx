@@ -29,9 +29,21 @@ export default function BachiraPage() {
   }, [])
 
   const videos = [
-    { id: 1, iframedata:`<iframe src= "https://www.youtube.com/embed/q6v0ATy1Vuw" title="YouTube video player" frameborder="0" allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` },
-    { id: 2, iframedata:`<iframe src="https://www.youtube.com/embed/XFQJstsChbM" title="YouTube video player" frameborder="0" allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` },
-    { id: 3, iframedata:`<iframe src="https://www.youtube.com/embed/Qdne2ayzeyM" title="YouTube video player" frameborder="0" allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`  }
+    {
+      id: 1,
+      title: "Bachira Skills",
+      embedId: "q6v0ATy1Vuw",
+    },
+    {
+      id: 2,
+      title: "Blue Lock Moments",
+      embedId: "XFQJstsChbM",
+    },
+    {
+      id: 3,
+      title: "Monster Dribbling",
+      embedId: "Qdne2ayzeyM",
+    },
   ]
 
   return (
@@ -72,9 +84,9 @@ export default function BachiraPage() {
       </div>
 
       <div className="page-content">
-                  <div className="pattern">
-            <div className="pattern-inner"></div>
-          </div>
+        <div className="pattern">
+          <div className="pattern-inner"></div>
+        </div>
 
         <div className="container">
           <header>
@@ -83,28 +95,28 @@ export default function BachiraPage() {
             </h1>
           </header>
 
-
           <main>
             <div className="content">
-              <p>
-                Bachira cause blue lock goated and your hair inspo 
-              </p>
-              <p>
-                You should read the manga sometime
-              </p>
-              <p>
-                maybe when you join college?
-              </p>
+              <p>Bachira cause blue lock goated and your hair inspo</p>
+              <p>You should read the manga sometime</p>
+              <p>maybe when you join college?</p>
 
-              <div className="video-grid">
+              <div className="bachira-video-grid">
                 {videos.map((video) => (
-                  <div key={video.id} className="video-card">
-                    <div dangerouslySetInnerHTML={{ __html: video.iframedata }}></div>
+                  <div key={video.id} className="bachira-video-card">
+                    <div className="bachira-video-container">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${video.embedId}`}
+                        title={video.title}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
-              <br/>
-              <p>I'm not sure why the right side of each card is empty like that lol</p>
             </div>
           </main>
         </div>

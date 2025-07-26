@@ -4,7 +4,6 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import "./theme.css"
 
-
 interface Balloon {
   id: number
   x: number
@@ -16,6 +15,9 @@ interface Balloon {
 
 export default function StartPage() {
   const [balloons, setBalloons] = useState<Balloon[]>([])
+  const [score, setScore] = useState(0)
+  const [poppedCount, setPoppedCount] = useState(0)
+  const [showRickRoll, setShowRickRoll] = useState(false)
 
   useEffect(() => {
     // Set start theme colors
@@ -37,18 +39,27 @@ export default function StartPage() {
     }
   }, [])
 
-    useEffect(() => {
+  useEffect(() => {
     // Animation loop for balloons
     const animationInterval = setInterval(() => {
-      setBalloons(
-        (prevBalloons) =>
-          prevBalloons
-            .map((balloon) => ({
-              ...balloon,
-              y: balloon.y - balloon.speed,
-            }))
-            .filter((balloon) => balloon.y > -100), // Remove balloons that went off screen
-      )
+      setBalloons((prevBalloons) => {
+        const updatedBalloons = prevBalloons
+          .map((balloon) => ({
+            ...balloon,
+            y: balloon.y - balloon.speed,
+          }))
+          .filter((balloon) => {
+            if (balloon.y > -100) {
+              return true
+            } else {
+              // Balloon escaped - lose 1 point
+              setScore((prev) => Math.max(0, prev - 1))
+              return false
+            }
+          })
+
+        return updatedBalloons
+      })
     }, 16) // ~60fps
 
     return () => clearInterval(animationInterval)
@@ -63,15 +74,33 @@ export default function StartPage() {
       color: colors[Math.floor(Math.random() * colors.length)],
       size: 40 + Math.random() * 40, // 40-80px
       speed: 1 + Math.random() * 2, // 1-3px per frame
-    }));
+    }))
 
     setBalloons((prev) => [...prev, ...newBalloons])
   }
 
   const popBalloon = (id: number) => {
     setBalloons((prev) => prev.filter((balloon) => balloon.id !== id))
+    setScore((prev) => prev + 1)
+    setPoppedCount((prev) => {
+      const newCount = prev + 1
+      if (newCount === 20) {
+        setShowRickRoll(true)
+      }
+      return newCount
+    })
   }
 
+  const closeRickRoll = () => {
+    setShowRickRoll(false)
+  }
+
+  const resetGame = () => {
+    setScore(0)
+    setPoppedCount(0)
+    setBalloons([])
+    setShowRickRoll(false)
+  }
 
   return (
     <>
@@ -110,40 +139,93 @@ export default function StartPage() {
         </nav>
       </div>
 
-      <div className="page-content">
-          <div className="pattern">
-            <div className="pattern-inner"></div>
+      {/* Score Display */}
+      <div className="score-display">
+        <div className="score-item">
+          <span className="score-label">Score:</span>
+          <span className="score-value">{score}</span>
+        </div>
+        <div className="score-item">
+          <span className="score-label">Popped:</span>
+          <span className="score-value">{poppedCount}</span>
+        </div>
+        <button className="reset-btn" onClick={resetGame}>
+          Reset
+        </button>
+      </div>
+
+      {/* Rick Roll Modal */}
+      {showRickRoll && (
+        <div className="rickroll-modal">
+          <div className="rickroll-content">
+            <button className="close-btn" onClick={closeRickRoll}>
+              ×
+            </button>
+            <h2>CONGRATULATIONS!</h2>
+            <p>You popped 20 balloons so here you go lol</p>
+            <div className="rickroll-video">
+              <iframe
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&start=0"
+                title="Rick Roll"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            <p className="rickroll-text">Never gonna give you up! 🕺</p>
           </div>
+        </div>
+      )}
+
+      <div className="page-content">
+        <div className="pattern">
+          <div className="pattern-inner"></div>
+        </div>
         <div className="container">
           <header>
             <h1>
-              <span className="flex items-center justify-center">GOOD LUCK ON YOUR EXAMS!</span> 
+              <span className="flex items-center justify-center">GOOD LUCK ON YOUR EXAMS!</span>
             </h1>
           </header>
-
-
-
           <main>
             <div className="content">
               <h2 className="text-xl">Hey, hope you like this website lol</h2>
-              <br/>
-              <br/>
+              <br />
+              <br />
               <p>
-                Between being worried about landing a job and being worried you being gone, I decided to make a website to basically help both, forget about jobs for a while and also apologize I guess?
+                Between being worried about landing a job and being worried you being gone, I decided to make a website
+                to basically help both, forget about jobs for a while and also apologize I guess?
               </p>
-              <br/>
+              <br />
+              <p>Sooooooo let me know what you think of it and I do hope you like it!</p>
               <p>
-                Sooooooo let me know what you think of it and I do hope you like it!
+                I'm not sure if you get the theme but it's actually from the Nier:Automata game. I used it cause well
+                one of the last convos was you being suddenly obssessed over A2 and 2B and I really wanted to use the UI
+                for something ever since I played that game.
               </p>
-              <p>I'm not sure if you get the theme but it's actually from the Nier:Automata game. I used it cause well one of the last convos was you being suddenly obssessed over A2 and 2B and I really wanted to use the UI for something ever since I played that game.</p>
-              <p><br/><br/>Do check out the other pages aswell. I tried to use transitions to change colors according to their themes. I was originally gonna add some artists too but you know hard to assign a color to a music artist</p>
+              <p>
+                <br />
+                <br />
+                Do check out the other pages aswell. I tried to use transitions to change colors according to their
+                themes. I was originally gonna add some artists too but you know hard to assign a color to a music
+                artist
+              </p>
+              <div className="game-instructions">
+                <h3> Balloon Game Instructions:</h3>
+                <ul>
+                  <li>Click balloons to pop them and gain points (+1 each)</li>
+                  <li>If balloons escape off the top, you lose points (-1 each)</li>
+                  <li>Pop 20 balloons for something lol</li>
+                </ul>
+              </div>
               <button onClick={createBalloon}>Click it lol</button>
             </div>
           </main>
         </div>
       </div>
 
-            {/* Floating Balloons */}
+      {/* Floating Balloons */}
       <div className="balloons-container">
         {balloons.map((balloon) => (
           <div

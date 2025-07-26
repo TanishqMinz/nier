@@ -4,14 +4,13 @@ import Link from "next/link"
 import { useEffect } from "react"
 import "../theme.css"
 
-
 export default function SilentHillPage() {
   useEffect(() => {
     // Set Silent Hill theme colors
     document.documentElement.style.setProperty("--bg-color", "#8b0000")
     document.documentElement.style.setProperty("--text-color", "white")
     document.documentElement.style.setProperty("--bg-color-rgb", "139, 0, 0")
-    document.documentElement.style.setProperty("--text-color-rgb", "255, 69, 0")
+    document.documentElement.style.setProperty("--text-color-rgb", "255, 255, 255")
     document.documentElement.style.setProperty(
       "--theme-image",
       "url('/placeholder.svg?height=200&width=300&text=Silent+Hill+Theme')",
@@ -66,6 +65,24 @@ export default function SilentHillPage() {
         </nav>
       </div>
 
+      {/* Content above video */}
+      <div className="silent-hill-content">
+        <div className="container">
+          <header>
+            <div className="silent-hill-text">
+              <p>In my restless dreams, I see that town</p>
+              <h1><span>SILENT HILL</span></h1>
+              <p>I remembered you having this song once on somewhere?</p>
+              <br />
+              <p>
+                I guess this works better but the text doesn't look as creepy anymore
+              </p>
+            </div>
+          </header>
+        </div>
+      </div>
+
+      {/* Background video */}
       <div className="background-video">
         <iframe
           width="100%"
@@ -78,23 +95,6 @@ export default function SilentHillPage() {
           allowFullScreen
         />
       </div>
-
-      <main className="silent-hill">
-        <div className="pattern">
-          <div className="pattern-inner"></div>
-        </div>
-        <div className="container">
-          <header>
-            <h1>
-              <span>SILENT HILL</span>
-              <p>In my restless dreams, I see that town</p>
-              <p>I remembered you having this song once on somewhere?</p>
-              <br />
-              <p>Sorry if this made your eyes hurt lol I couldn't think of a good overlay design that would work on this</p>
-            </h1>
-          </header>
-        </div>
-      </main>
     </>
   )
 }
