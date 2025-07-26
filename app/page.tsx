@@ -129,7 +129,7 @@ export default function StartPage() {
               <br/>
               <br/>
               <p>
-                Between being worried about landing a job and being worried you being gone forever, I decided to make a website to basically help both, forget about jobs for a while and also apologize I guess?
+                Between being worried about landing a job and being worried you being gone, I decided to make a website to basically help both, forget about jobs for a while and also apologize I guess?
               </p>
               <br/>
               <p>
