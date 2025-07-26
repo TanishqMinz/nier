@@ -158,7 +158,7 @@ export default function StartPage() {
       {showRickRoll && (
         <div className="rickroll-modal">
           <div className="rickroll-content">
-            <button className="close-btn" onClick={closeRickRoll}>
+            <button className="rickroll-close" onClick={closeRickRoll}>
               ×
             </button>
             <h2>CONGRATULATIONS!</h2>

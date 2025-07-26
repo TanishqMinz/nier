@@ -34,39 +34,39 @@ export default function MikuPage() {
   const imageCards = [
     {
       id: 1,
-      height: 250,
       title: "cool figure",
       src: "/ac529ef9822aa5e15d1779f9c65a82f1.jpg",
-      description: "A digital artwork of Miku.",
     },
     {
       id: 2,
-      height: 180,
       title: "Fortnite battle pass",
       src: "/hatsune-miku-joins-fortnite.jpg",
-      description: "Miku in neon lights.",
     },
     {
       id: 3,
-      height: 320,
       title: "Cute",
       src: "/hd-adorable-hatsune-miku-art-anuzjvsnrxg422dt.jpg",
-      description: "Miku performing on stage.",
     },
-    { id: 4, height: 200, title: "Pokemon?", src: "/volttackle.jpg", description: "Character design sheet." },
+    { id: 4, title: "Pokemon?", src: "/volttackle.jpg"},
     {
       id: 5,
-      height: 280,
       title: "Basic but pretty much the original",
       src: "/R.40c3a4ed01204bd8094e6cb21a0813ac",
-      description: "Scene from a music video.",
     },
     {
       id: 6,
-      height: 160,
       title: "Anime",
       src: "/R.e6bcd61f341e52b7fae1d73587880372",
-      description: "Fan art illustration.",
+    },
+    {
+      id: 7,
+      title: "By yukomeow_ on insta",
+      src: "/436175775_1155071859163975_9167521320672195422_n.jpg",
+    },
+    {
+      id: 8,
+      title: "Legendary song",
+      src: "/SONG_PV027_illustration.png",
     },
   ]
 
@@ -138,13 +138,17 @@ export default function MikuPage() {
       {lightboxImage && (
         <div className="lightbox-overlay" onClick={closeLightbox}>
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <button className="lightbox-close" onClick={closeLightbox}>
+            <button className="miku-lightbox-close" onClick={closeLightbox}>
               ×
             </button>
             <img src={lightboxImage || "/placeholder.svg"} alt={lightboxTitle} className="lightbox-image" />
             <div className="lightbox-controls">
               <h3>{lightboxTitle}</h3>
-              <button className="download-btn" onClick={() => downloadImage(lightboxImage, lightboxTitle)}>
+              <button
+                className="miku-lightbox-btn"
+                data-label="DOWNLOAD"
+                onClick={() => downloadImage(lightboxImage, lightboxTitle)}
+              >
                 Download
               </button>
             </div>
@@ -180,10 +184,18 @@ export default function MikuPage() {
                       <div className="card-overlay">
                         <h3>{card.title}</h3>
                         <div className="card-actions">
-                          <button className="card-btn view-btn" onClick={() => openLightbox(card.src, card.title)}>
+                          <button
+                            className="miku-card-btn"
+                            data-label="VIEW"
+                            onClick={() => openLightbox(card.src, card.title)}
+                          >
                             View
                           </button>
-                          <button className="card-btn download-btn" onClick={() => downloadImage(card.src, card.title)}>
+                          <button
+                            className="miku-card-btn"
+                            data-label="SAVE"
+                            onClick={() => downloadImage(card.src, card.title)}
+                          >
                             Download
                           </button>
                         </div>
